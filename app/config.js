@@ -44,6 +44,18 @@ db.knex.schema.hasTable('clicks').then(function(exists) {
 /************************************************************/
 // Add additional schema definitions below
 /************************************************************/
-
+db.knex.schema.hasTable('users').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('users', function (user) {
+      user.increments('id').primary();
+      user.string('username'); // contains username
+      user.string('password'); // contains hashed password
+      //user.string('saltkey'); // contains saltkey, when combined with password can regen. password
+      user.timestamps();
+    }).then(function (table) {
+      console.log('Created Table Users', table);
+    });
+  }
+});
 
 module.exports = db;

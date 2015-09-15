@@ -10,6 +10,7 @@ var User = require('./app/models/user');
 var Links = require('./app/collections/links');
 var Link = require('./app/models/link');
 var Click = require('./app/models/click');
+var session = require('express-session');
 
 var app = express();
 
@@ -21,11 +22,15 @@ app.use(bodyParser.json());
 // Parse forms (signup/login)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+// app.use(session({secret: 'secret'}));
 
-
+var sess;
 app.get('/', 
 function(req, res) {
-  res.render('index');
+  util.checkUser(req, res, function () {
+    res.render('index');
+  });
+  //res.render('login');
 });
 
 app.get('/create', 
@@ -72,11 +77,23 @@ function(req, res) {
   });
 });
 
+app.post('/signup', function (req, res) {
+
+  console.log(req.session);
+  res.end();
+});
+
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
 
-
+var isAuthenticated = function(request, response, next){
+  if(false){
+    return next;
+  } else {
+    response.redirect('login')
+  }
+}
 
 /************************************************************/
 // Handle the wildcard route last - if all other routes fail
