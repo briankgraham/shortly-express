@@ -48,10 +48,10 @@ db.knex.schema.hasTable('users').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
-      user.string('username'); // contains username
-      user.string('password'); // contains hashed password
-      //user.string('saltkey'); // contains saltkey, when combined with password can regen. password
-      user.timestamps();
+      user.string('username', 30); // contains username
+      user.string('password', 30); // contains hashed password
+      user.string('salt'); // contains saltkey, when combined with password can regen. password
+      //user.timestamps();
     }).then(function (table) {
       console.log('Created Table Users', table);
     });
